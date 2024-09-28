@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="30 seconds">
+  <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+  <property name="LOGGING_PATTERN" value="[%d{yyyy-MM-dd HH:mm:ss:SSS}]%clr([%-5level]) %class{0}.%M%clr(\(%L\)){magenta}| %msg%n"/>
+
+  <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>
+        ${LOGGING_PATTERN}
+      </pattern>
+    </encoder>
+  </appender>
+
+  <!--  <logger name="org.hibernate.type.BasicTypeRegistry" level="INFO"/>-->
+  <!--  <logger name="io.swagger.models" level="ERROR"/>-->
+
+  <springProfile name="local">
+    <root level="INFO">
+      <appender-ref ref="CONSOLE"/>
+    </root>
+  </springProfile>
+
+</configuration>

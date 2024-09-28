@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:latest
+    container_name: mysql_jongha
+    environment:
+      MYSQL_ROOT_PASSWORD: root1234
+      MYSQL_DATABASE: demo_subscription
+      MYSQL_USER: manager
+      MYSQL_PASSWORD: manager1234
+    ports:
+      - "3400:3306"
+    volumes:
+      - ./../sql/1.schema.sql:/docker-entrypoint-initdb.d/1.schema.sql
+      - ./../sql/2.data.sql:/docker-entrypoint-initdb.d/2.data.sql
