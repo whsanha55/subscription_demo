@@ -1,5 +1,6 @@
 package com.jongha.demo.exception;
 
+import com.jongha.demo.global.base.BaseResponse;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,11 +17,12 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(BindException.class)
-    protected ResponseEntity<String> handleValidationException(BindException exception) {
+    protected ResponseEntity<BaseResponse<?>> handleValidationException(BindException exception) {
         var message = Optional.ofNullable(exception.getFieldError())
             .map(DefaultMessageSourceResolvable::getDefaultMessage)
             .orElse("");
-        return ResponseEntity.badRequest().body(message);
+        return ResponseEntity.badRequest()
+            .body(BaseResponse.error(message));
     }
 
     @ExceptionHandler(NoHandlerFoundException.class)
@@ -29,16 +31,20 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(BaseException.class)
-    protected ResponseEntity<String> handleBaseException(BaseException exception) {
-        log.info("handleBaseException : {}", exception);
-        return ResponseEntity.status(exception.getHttpStatus()).body(exception.getLocalizedMessage());
+    protected ResponseEntity<BaseResponse<?>> handleBaseException(BaseException exception) {
+        log.info("BaseException", exception);
+
+        return ResponseEntity.status(exception.getHttpStatus())
+            .body(BaseResponse.error(exception.getLocalizedMessage()));
     }
 
     @ExceptionHandler(value = Exception.class)
-    protected ResponseEntity<String> handlerException(Exception exception) {
-        log.error("", exception);
+    protected ResponseEntity<BaseResponse<?>> handlerException(Exception exception) {
+        log.error("Exception", exception);
+
         var message = exception.getClass().getSimpleName() + ":::" + exception.getLocalizedMessage();
-        return ResponseEntity.internalServerError().body(message);
+        return ResponseEntity.internalServerError()
+            .body(BaseResponse.error(message));
     }
 
 }

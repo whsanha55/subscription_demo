@@ -1,13 +1,29 @@
 package com.jongha.demo.global.base;
 
-import io.swagger.v3.oas.annotations.media.Schema;
-import java.util.UUID;
-import lombok.Data;
+import com.jongha.demo.global.filter.MDCFilter;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Value;
+import org.slf4j.MDC;
 
-@Data
-public class BaseResponse {
+@Value
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+public class BaseResponse<T> {
 
-    @Schema(description = "응답 UUID", example = "123e4567-e89b-12d3-a456-426614174000")
-    protected String uuid = UUID.randomUUID().toString();
+    String requestId = MDC.get(MDCFilter.REQUEST_ID);
+    String errorMessage;
+    T returnObject;
+
+    public static <T> BaseResponse<T> ok() {
+        return new BaseResponse<>(null, null);
+    }
+
+    public static <T> BaseResponse<T> ok(T returnObject) {
+        return new BaseResponse<>(null, returnObject);
+    }
+
+    public static <T> BaseResponse<T> error(String errorMessage) {
+        return new BaseResponse<>(errorMessage, null);
+    }
 
 }
