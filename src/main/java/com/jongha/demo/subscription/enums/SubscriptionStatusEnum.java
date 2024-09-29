@@ -14,8 +14,8 @@ public enum SubscriptionStatusEnum {
 
     public void validateSubscribe(SubscriptionStatusEnum newStatus, Purpose purpose) {
         var violated = switch (purpose) {
-            case SUBSCRIBE -> this.grade <= newStatus.grade;
-            case UNSUBSCRIBE -> this.grade >= newStatus.grade;
+            case SUBSCRIBE -> this.grade >= newStatus.grade;
+            case UNSUBSCRIBE -> this.grade <= newStatus.grade;
         };
 
         if (violated) {

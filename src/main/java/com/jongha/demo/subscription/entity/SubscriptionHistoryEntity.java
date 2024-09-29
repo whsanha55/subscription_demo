@@ -6,7 +6,6 @@ import com.jongha.demo.subscription.enums.SubscriptionStatusEnum;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -33,10 +32,8 @@ public class SubscriptionHistoryEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne(targetEntity = SubscriptionEntity.class, fetch = FetchType.LAZY)
-    @JoinColumn(name = "subscription_id")
-    private SubscriptionEntity subscription;
-    @ManyToOne(targetEntity = ChannelEntity.class, fetch = FetchType.LAZY)
+    private String phoneNumber;
+    @ManyToOne(targetEntity = ChannelEntity.class)
     @JoinColumn(name = "channel_id")
     private ChannelEntity channel;
     @Enumerated(EnumType.STRING)
@@ -46,7 +43,7 @@ public class SubscriptionHistoryEntity extends BaseEntity {
 
     @Builder
     public SubscriptionHistoryEntity(SubscriptionEntity oldSubscriptionEntity, SubscriptionStatusEnum subscriptionStatus) {
-        this.subscription = oldSubscriptionEntity;
+        this.phoneNumber = oldSubscriptionEntity.getPhoneNumber();
         this.channel = oldSubscriptionEntity.getChannel();
         this.oldSubscriptionStatus = oldSubscriptionEntity.getSubscriptionStatus();
         this.subscriptionStatus = subscriptionStatus;
