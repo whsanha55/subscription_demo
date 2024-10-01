@@ -4,6 +4,7 @@ import com.jongha.demo.exception.BasePageResponse;
 import com.jongha.demo.global.base.BaseResponse;
 import com.jongha.demo.subscription.facade.SubscriptionFacade;
 import com.jongha.demo.subscription.service.SubscriptionService;
+import com.jongha.demo.subscription.vo.SubscriptionChannelResponse;
 import com.jongha.demo.subscription.vo.SubscriptionHistoryRequest;
 import com.jongha.demo.subscription.vo.SubscriptionHistoryResponse;
 import com.jongha.demo.subscription.vo.SubscriptionRequest;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "SubscriptionController", description = "구독 API")
@@ -40,6 +42,14 @@ public class SubscriptionController {
     public BaseResponse<Void> unsubscription(@RequestBody @Valid UnsubscriptionRequest request) {
         subscriptionFacade.unsubscribe(request);
         return BaseResponse.ok();
+    }
+
+    @Operation(summary = "현 구독 채널 조회", description = "특정 유저의 구독 채널을 조회합니다.(해지 포함)")
+    @GetMapping(value = "/subscription/channel")
+    public SubscriptionChannelResponse getSubscriptionChannels(@RequestParam String phoneNumber) {
+        var subscriptionHistory = subscriptionService.getSubscriptionChannels(phoneNumber);
+        return new SubscriptionChannelResponse(subscriptionHistory);
+
     }
 
     @Operation(summary = "구독 이력 조회(페이징)", description = "특정 유저의 구독 이력을 조회합니다.")

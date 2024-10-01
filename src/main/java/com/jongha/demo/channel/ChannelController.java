@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "SubscriptionController", description = "구독 API")
+@Tag(name = "ChannelController", description = "채널 API")
 @RequiredArgsConstructor
 @RestController
 @Slf4j

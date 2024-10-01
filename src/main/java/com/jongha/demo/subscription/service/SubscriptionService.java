@@ -75,4 +75,8 @@ public class SubscriptionService {
     public List<SubscriptionHistoryEntity> getSubscriptionHistory(Specification<SubscriptionHistoryEntity> specification) {
         return subscriptionHistoryRepository.findAll(specification);
     }
+
+    public List<SubscriptionEntity> getSubscriptionChannels(String phoneNumber) {
+        return subscriptionRepository.findByPhoneNumber(phoneNumber);
+    }
 }
