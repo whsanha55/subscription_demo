@@ -2,8 +2,10 @@ package com.jongha.demo.subscription.entity;
 
 import com.jongha.demo.channel.entity.ChannelEntity;
 import com.jongha.demo.global.base.BaseEntity;
+import com.jongha.demo.global.converter.PhoneNumberConverter;
 import com.jongha.demo.subscription.enums.SubscriptionStatusEnum;
 import com.jongha.demo.subscription.enums.SubscriptionStatusEnum.Purpose;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -35,6 +37,7 @@ public class SubscriptionEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Convert(converter = PhoneNumberConverter.class)
     private String phoneNumber;
     @Enumerated(EnumType.STRING)
     private SubscriptionStatusEnum subscriptionStatus;
