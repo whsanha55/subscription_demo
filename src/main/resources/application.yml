@@ -15,8 +15,14 @@ spring:
         physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
     show-sql: true
     open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
 
 
 server:
   port: 8080
 
+logging:
+  level:
+    org.hibernate.orm.jdbc.bind: trace
