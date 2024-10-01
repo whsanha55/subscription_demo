@@ -4,9 +4,11 @@ import com.jongha.demo.subscription.entity.SubscriptionHistoryEntity;
 import java.time.LocalDate;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 
-public interface SubscriptionHistoryRepository extends JpaRepository<SubscriptionHistoryEntity, Long> {
+public interface SubscriptionHistoryRepository extends JpaRepository<SubscriptionHistoryEntity, Long>,
+    JpaSpecificationExecutor<SubscriptionHistoryEntity> {
 
     List<SubscriptionHistoryEntity> findByPhoneNumber(String phoneNumber);
 

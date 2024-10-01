@@ -29,7 +29,7 @@ public class SubscriptionFacade {
     @Transactional
     public void unsubscribe(UnsubscriptionRequest request) {
         var channel = channelService.getChannel(request.getChannelId());
-        subscriptionService.subscribe(request.toDTO(channel));
+        subscriptionService.unsubscribe(request.toDTO(channel));
 
     }
 

@@ -10,11 +10,13 @@ import com.jongha.demo.subscription.repository.SubscriptionRepository;
 import com.jongha.demo.subscription.vo.SubscriptionDTO;
 import com.jongha.demo.subscription.vo.UnsubscriptionDTO;
 import jakarta.transaction.Transactional;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -47,7 +49,6 @@ public class SubscriptionService {
 
     @Transactional
     public void unsubscribe(UnsubscriptionDTO dto) {
-
         var entity = getAndLockSubscriptionOptional(dto.getPhoneNumber(), dto.getChannel())
             .orElseThrow(() -> new BaseException("channel not found"));
 
@@ -63,22 +64,15 @@ public class SubscriptionService {
 
     }
 
-
-    public List<SubscriptionEntity> getSubscriptions(String phoneNumber) {
-        return subscriptionRepository.findByPhoneNumber(phoneNumber);
-    }
-
-
-    public List<SubscriptionHistoryEntity> getSubscriptionHistory(String phoneNumber) {
-        return subscriptionHistoryRepository.findByPhoneNumber(phoneNumber);
-    }
-
-    public List<SubscriptionHistoryEntity> getSubscriptionHistory(LocalDate date, Long channelId) {
-        return subscriptionHistoryRepository.findByDateAndChannel(date, channelId);
-    }
-
     private Optional<SubscriptionEntity> getAndLockSubscriptionOptional(String phoneNumber, ChannelEntity channel) {
         return subscriptionRepository.findAndLockByPhoneNumberAndChannel(phoneNumber, channel);
     }
 
+    public Page<SubscriptionHistoryEntity> getSubscriptionHistory(Specification<SubscriptionHistoryEntity> specification, PageRequest pageRequest) {
+        return subscriptionHistoryRepository.findAll(specification, pageRequest);
+    }
+
+    public List<SubscriptionHistoryEntity> getSubscriptionHistory(Specification<SubscriptionHistoryEntity> specification) {
+        return subscriptionHistoryRepository.findAll(specification);
+    }
 }

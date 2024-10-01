@@ -16,8 +16,8 @@ public class UnsubscriptionRequest {
     @NotNull
     private SubscriptionStatusEnum subscriptionStatus;
 
-    public SubscriptionDTO toDTO(ChannelEntity channel) {
-        return SubscriptionDTO.builder()
+    public UnsubscriptionDTO toDTO(ChannelEntity channel) {
+        return UnsubscriptionDTO.builder()
             .phoneNumber(phoneNumber)
             .channel(channel)
             .subscriptionStatus(subscriptionStatus)
