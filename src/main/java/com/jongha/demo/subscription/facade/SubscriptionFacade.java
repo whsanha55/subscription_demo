@@ -1,6 +1,7 @@
 package com.jongha.demo.subscription.facade;
 
 import com.jongha.demo.channel.service.ChannelService;
+import com.jongha.demo.exception.BaseException;
 import com.jongha.demo.subscription.service.SubscriptionService;
 import com.jongha.demo.subscription.vo.SubscriptionRequest;
 import com.jongha.demo.subscription.vo.UnsubscriptionRequest;
@@ -22,6 +23,9 @@ public class SubscriptionFacade {
     @Transactional
     public void subscribe(SubscriptionRequest request) {
         var channel = channelService.getChannel(request.getChannelId());
+        if (!channel.isAbleSubscribe()) {
+            throw new BaseException("channel can not be subscribed");
+        }
         subscriptionService.subscribe(request.toDTO(channel));
 
     }
@@ -29,6 +33,10 @@ public class SubscriptionFacade {
     @Transactional
     public void unsubscribe(UnsubscriptionRequest request) {
         var channel = channelService.getChannel(request.getChannelId());
+        if (!channel.isAbleUnsubscribe()) {
+            throw new BaseException("channel can not be unsubscribed");
+        }
+
         subscriptionService.unsubscribe(request.toDTO(channel));
 
     }
